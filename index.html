@@ -1,0 +1,62 @@
+<html>
+
+<head>
+    <link href='https://unpkg.com/maplibre-gl@1.14.0-rc.1/dist/maplibre-gl.css' rel='stylesheet' />
+    <script src='https://unpkg.com/maplibre-gl@1.14.0-rc.1/dist/maplibre-gl.js'></script>
+    <style>
+        body {
+            height: 100vh;
+            margin: 0;
+        }
+
+        #map {
+            height: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="map"></div>
+    <script>
+        var token = "{mapcherry_api_key}"
+        var style = "light"
+        var map = new maplibregl.Map({
+            container: "map",
+            style: "https://api.mapcherry.io/styles/" + style + ".json?key=" + token,
+            center: [12.0852, 54.1235], // [lng, lat]
+            zoom: 11.14,
+            hash: true,
+
+            customAttribution: "<a href=\"https://mapcherry.io/?ref=copyright\" target=\"_blank\">&copy; Mapcherry</a> <a href=\"https://www.openstreetmap.org/copyright\" target=\"_blank\">&copy; OpenStreetMap contributors</a>",
+        });
+
+        map.on("load", () => {
+            map.addSource("parkanlagen_wastebaskets", {
+                type: "vector",
+                url: "http://localhost:8080/data/parkanlagen-wastebaskets.json"
+            });
+            map.addLayer({
+                "id": "parkanlagen",
+                "type": "fill",
+                "source": "parkanlagen_wastebaskets",
+                "source-layer": "parkanlagen",
+                "paint": {
+                    "fill-color": "rgba(153, 217, 140, 1)",
+                    "fill-opacity": 0.3
+                }
+            })
+            map.addLayer({
+                "id": "wastebaskets",
+                "type": "symbol",
+                "source": "parkanlagen_wastebaskets",
+                "source-layer": "wastebaskets",
+                "layout": {
+                    "icon-image": "waste_basket_11"
+                }
+            })
+        })
+
+    </script>
+</body>
+
+</html>

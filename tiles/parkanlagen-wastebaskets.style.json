@@ -1,0 +1,41 @@
+{
+  "version": 8,
+  "name": "Parcuri_waste",
+  "metadata": {
+    "mapbox:autocomposite": false,
+    "mapbox:type": "template",
+    "maputnik:renderer": "mbgljs"
+  },
+  "sources": {
+    "parkanlagen_wastebaskets": {
+      "type": "vector",
+      "url": "http://localhost:8080/data/parkanlagen-wastebaskets.json"
+    }
+  },
+  "sprite": "https://sprites.mapcherry.io/osm-liberty",
+  "glyphs": "https://fonts.mapcherry.io/{fontstack}/{range}.pbf",
+  "layers": [
+    {
+      "id": "parkanlagen",
+      "type": "fill",
+      "source": "parkanlagen_wastebaskets",
+      "source-layer": "parkanlagen",
+      "paint": {
+        "fill-color": "rgba(153, 217, 140, 1)",
+        "fill-opacity": 0.3
+      }
+    },
+    {
+      "id": "wastebaskets",
+      "type": "symbol",
+      "source": "parkanlagen_wastebaskets",
+      "source-layer": "wastebaskets",
+      "layout": {
+        "icon-image": "waste_basket_11"
+      }
+    }
+  ],
+  "id": "basic",
+  "attribution": "<a href=\"https://mapcherry.io/?ref=copyright\" target=\"_blank\">&copy; Mapcherry</a> <a href=\"https://openmaptiles.org/\" target=\"_blank\">&copy; OpenMapTiles</a> <a href=\"https://www.openstreetmap.org/copyright\" target=\"_blank\">&copy; OpenStreetMap contributors</a>",
+  "owner": "Mapcherry"
+}
