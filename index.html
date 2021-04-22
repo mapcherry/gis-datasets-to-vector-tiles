@@ -22,15 +22,19 @@
         var style = "light"
         var map = new maplibregl.Map({
             container: "map",
-            style: "https://api.mapcherry.io/styles/" + style + ".json?key=" + token,
+            style: "https://staging.api.mapcherry.io/styles/" + style + ".json?key=" + token,
             center: [12.0852, 54.1235], // [lng, lat]
             zoom: 11.14,
             hash: true,
-
-            customAttribution: "<a href=\"https://mapcherry.io/?ref=copyright\" target=\"_blank\">&copy; Mapcherry</a> <a href=\"https://www.openstreetmap.org/copyright\" target=\"_blank\">&copy; OpenStreetMap contributors</a>",
+            customAttribution: "<a href=\"https://mapcherry.io/?ref=copyright\" target=\"_blank\">&copy; Mapcherry</a> <a href=\"https://openmaptiles.org/\" target=\"_blank\">&copy; OpenMapTiles</a> <a href=\"https://www.openstreetmap.org/copyright\" target=\"_blank\">&copy; OpenStreetMap contributors</a>",
         });
 
         map.on("load", () => {
+            addSourceAndLayers();
+            enablePopupOnParkanlagen();
+        })
+
+        function addSourceAndLayers() {
             map.addSource("parkanlagen_wastebaskets", {
                 type: "vector",
                 url: "http://localhost:8080/data/parkanlagen-wastebaskets.json"
@@ -54,7 +58,34 @@
                     "icon-image": "waste_basket_11"
                 }
             })
-        })
+        }
+
+        function enablePopupOnParkanlagen() {
+            // Create a popup, but don't add it to the map yet.
+            var popup = new maplibregl.Popup({
+                closeButton: false,
+                closeOnClick: false
+            });
+
+            map.on('mouseenter', 'parkanlagen', function (e) {
+                // Change the cursor style as a UI indicator.
+                map.getCanvas().style.cursor = 'pointer';
+
+                var coordinates = e.lngLat
+                var description = e.features[0].properties.bezeichnung;
+
+                // Populate the popup and set its coordinates
+                // based on the feature found.
+                popup.setLngLat(coordinates).setHTML(description).addTo(map);
+            });
+
+            map.on('mouseleave', 'parkanlagen', function () {
+                map.getCanvas().style.cursor = '';
+                popup.remove();
+            });
+        }
+
+
 
     </script>
 </body>
