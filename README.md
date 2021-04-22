@@ -26,7 +26,7 @@ https://mapcherry.github.io/gis-datasets-to-vector-tiles/
 
 ## Data aquisition
 1. Park data for Rostock https://data.europa.eu/data/datasets/a9486089-80ce-43ae-87fd-97f81260f34c?locale=en
-2. Overpass-turbo query for amenity = waste_basket https://overpass-turbo.eu/s/16lR
+2. Overpass-api query OSM on nodes with 'amenity' = 'waste_basket' tags for Rostock area  https://overpass-turbo.eu/s/16lR
 
 
 ## Data tiling
