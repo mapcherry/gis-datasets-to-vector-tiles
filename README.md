@@ -1,9 +1,6 @@
 # From custom GIS datasets to web friendly vector tiles - Workshop
 
-Integrate your custom GIS data into web / mobile friendly applications.
-
 This workshop will focus on transforming custom GIS data (shapefiles, geojsons) to web friendly vector tiles. Our work will be divided into 3 parts - Data acquisition , Data tiling and Data presentation.
-
 
 ## Agenda
 
@@ -12,6 +9,7 @@ This workshop will focus on transforming custom GIS data (shapefiles, geojsons) 
 3. Data tiling
 4. Data presentation
 5. Q&A
+
 
 ### Prerequisites
 
@@ -23,7 +21,63 @@ This workshop will focus on transforming custom GIS data (shapefiles, geojsons) 
 
 ## Introduction
 
+
+*The expected result:*
+
 https://mapcherry.github.io/gis-datasets-to-vector-tiles/
+
+*Web maps*
+
+Serving maps on the web means _transforming_ geographical data into tiles, _serving_ them through webserver, and _rendering_ them in browser or mobile apps.
+
+*Georaphical data formats*
+
+* OSM xml ( osm pbf )
+* Shapefile
+* GeoJSON
+* TopoJSON
+* SVG
+
+*Transformers*
+
+* OpenMapTiles
+* tippecanoe
+* [Tilemaker](https://github.com/systemed/tilemaker)
+
+
+*Tiles structure*
+
+![tiling scheme credits Emmanuel Stefanakis: https://www.researchgate.net/figure/Google-Maps-Tiling-Scheme-the-first-three-zoom-levels-the-tiles-and-their-numbering_fig1_321064657](./assets/Google-Maps-Tiling-Scheme-the-first-three-zoom-levels-the-tiles-and-their-numbering.png)
+
+ * Web map service
+ * Web map tile service
+ * Tile Map Service
+ * xyz
+ * quadkey
+
+
+*Tiles format* 
+
+ * vector
+   * mbtiles
+   * google
+   * esri
+ * raster
+   * png
+
+
+*Rendering libraries*
+
+* Leaflet
+* OpenLayers
+* Mapbox GL 
+* Maplibre GL
+* Tangram
+
+*Styiling*
+
+* Maputnik
+* Mapbox Studio
 
 
 ## Data aquisition
@@ -43,7 +97,7 @@ We are going to use tippecanoe to convert geojson to mbtiles.
 Generate mbtiles for parks:
 
 ```
-docker run -v "%CD%\data:/data" -v "%CD%\tiles:/tiles" --rm --name generate-parkanlagen-layer dorinoltean/tippecanoe:1.36.0 /bin/bash -c "tippecanoe --name=\"Parkanlagen vector tiles\" --layer=parkanlagen -o /tiles/parkanlagen.mbtiles  /data/parkanlagen.geojson"
+docker run -v "%CD%\data:/data" -v "%CD%\tiles:/tiles" --rm --name generate-parkanlagen-layer dorinoltean/tippecanoe:1.36.0 /bin/bash -c "tippecanoe --name=\"Parkanlagen vector tiles\" --layer=parkanlagen -z 16 -o /tiles/parkanlagen.mbtiles  /data/parkanlagen.geojson"
 ```
 
 

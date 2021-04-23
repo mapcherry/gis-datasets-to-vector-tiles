@@ -1,6 +1,7 @@
 <html>
 
 <head>
+    <title>From custom GIS datasets to web friendly vector tiles - Mapcherry </title>
     <link href='https://unpkg.com/maplibre-gl@1.14.0-rc.1/dist/maplibre-gl.css' rel='stylesheet' />
     <script src='https://unpkg.com/maplibre-gl@1.14.0-rc.1/dist/maplibre-gl.js'></script>
     <style>
@@ -37,6 +38,7 @@
         function addSourceAndLayers() {
             map.addSource("parkanlagen_wastebaskets", {
                 type: "vector",
+                /* url: "http://localhost:8080/data/parkanlagen-wastebaskets.json"*/
                 tiles: [
                     "https://a.tiles.mapcherry.io/parkanlagen-wastebaskets/{z}/{x}/{y}.pbf?key=" + token,
                     "https://b.tiles.mapcherry.io/parkanlagen-wastebaskets/{z}/{x}/{y}.pbf?key=" + token,
@@ -81,18 +83,6 @@
                         "visibility": "visible"
                     }
                 })
-            /*map.addLayer(
-                {
-                    "id": "wastebaskets",
-                    "type": "symbol",
-                    "source": "parkanlagen_wastebaskets",
-                    "source-layer": "wastebaskets",
-                    "minzoom": 15,
-                    "layout": {
-                        "icon-image": "waste_basket_11",
-                        "visibility": "visible"
-                    }
-                })*/
 
             map.addLayer(
                 {
@@ -188,7 +178,6 @@
                 popup.remove();
             });
         }
-
 
 
     </script>
