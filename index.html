@@ -1,0 +1,186 @@
+<html>
+
+<head>
+  <title>From custom GIS datasets to web friendly vector tiles - Mapcherry </title>
+  <link href='https://unpkg.com/maplibre-gl@1.14.0-rc.1/dist/maplibre-gl.css' rel='stylesheet' />
+  <script src='https://unpkg.com/maplibre-gl@1.14.0-rc.1/dist/maplibre-gl.js'></script>
+  <style>
+    body {
+      height: 100vh;
+      margin: 0;
+    }
+
+    #map {
+      height: 100%;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="map"></div>
+  <script>
+    var token = "106d7aa7969c52d33698184a62bc3c1b"
+    var style = "light"
+    var map = new maplibregl.Map({
+      container: "map",
+      style: "https://api.mapcherry.io/styles/" + style + ".json?key=" + token,
+      center: [12.0852, 54.1235], // [lng, lat]
+      zoom: 11.14,
+      hash: true,
+      customAttribution: "<a href=\"https://mapcherry.io/?ref=copyright\" target=\"_blank\">&copy; Mapcherry</a> <a href=\"https://openmaptiles.org/\" target=\"_blank\">&copy; OpenMapTiles</a> <a href=\"https://www.openstreetmap.org/copyright\" target=\"_blank\">&copy; OpenStreetMap contributors</a>",
+    });
+
+    map.on("load", () => {
+      addSourceAndLayers();
+      enablePopupOnParkanlagen();
+    })
+
+    function addSourceAndLayers() {
+      map.addSource("parkanlagen_wastebaskets", {
+        type: "vector",
+        /* url: "http://localhost:8080/data/parkanlagen-wastebaskets.json"*/
+        tiles: [
+          "https://a.tiles.mapcherry.io/parkanlagen-wastebaskets/{z}/{x}/{y}.pbf?key=" + token,
+          "https://b.tiles.mapcherry.io/parkanlagen-wastebaskets/{z}/{x}/{y}.pbf?key=" + token,
+          "https://c.tiles.mapcherry.io/parkanlagen-wastebaskets/{z}/{x}/{y}.pbf?key=" + token,
+        ],
+        minzoom: 0,
+        maxzoom: 16,
+        bounds: [
+          12.041016,
+          54.061194,
+          12.190619,
+          54.179319
+        ],
+      });
+      map.addLayer({
+        "id": "parkanlagen",
+        "type": "fill",
+        "source": "parkanlagen_wastebaskets",
+        "source-layer": "parkanlagen",
+        "paint": {
+          "fill-color": "rgba(153, 217, 140, 1)",
+          "fill-opacity": 0.3
+        }
+      })
+
+      map.addLayer(
+        {
+          "id": "wastebaskets-unclustered",
+          "type": "symbol",
+          "source": "parkanlagen_wastebaskets",
+          "source-layer": "wastebaskets",
+          "minzoom": 10,
+          "filter": [
+            "all",
+            [
+              "!has",
+              "point_count"
+            ]
+          ],
+          "layout": {
+            "icon-image": "waste_basket_11",
+            "visibility": "visible"
+          }
+        })
+
+      map.addLayer(
+        {
+          "id": "clusters",
+          "type": "circle",
+          "source": "parkanlagen_wastebaskets",
+          "source-layer": "wastebaskets",
+          "filter": [
+            "all",
+            [
+              "has",
+              "point_count"
+            ]
+          ],
+          "layout": {
+            "visibility": "visible"
+          },
+          "paint": {
+            "circle-color": [
+              "step",
+              [
+                "get",
+                "point_count"
+              ],
+              "#51bbd6",
+              3,
+              "#f1f075",
+              10,
+              "#f28cb1"
+            ],
+            "circle-radius": [
+              "step",
+              [
+                "get",
+                "point_count"
+              ],
+              15,
+              3,
+              20,
+              10,
+              30
+            ]
+          }
+        })
+      map.addLayer(
+        {
+          "id": "cluster-count",
+          "type": "symbol",
+          "source": "parkanlagen_wastebaskets",
+          "source-layer": "wastebaskets",
+          "minzoom": 0,
+          "filter": [
+            "all",
+            [
+              "has",
+              "point_count"
+            ]
+          ],
+          "layout": {
+            "text-field": "{point_count}",
+            "text-font": [
+              "Roboto Medium"
+            ],
+            "text-size": 12
+          },
+          "paint": {
+            "text-color": "#535657"
+          }
+        })
+    }
+
+    function enablePopupOnParkanlagen() {
+      // Create a popup, but don't add it to the map yet.
+      var popup = new maplibregl.Popup({
+        closeButton: false,
+        closeOnClick: false
+      });
+
+      map.on('mouseenter', 'parkanlagen', function (e) {
+        // Change the cursor style as a UI indicator.
+        map.getCanvas().style.cursor = 'pointer';
+
+        var coordinates = e.lngLat
+        var description = e.features[0].properties.bezeichnung;
+
+        // Populate the popup and set its coordinates
+        // based on the feature found.
+        popup.setLngLat(coordinates).setHTML(description).addTo(map);
+      });
+
+      map.on('mouseleave', 'parkanlagen', function () {
+        map.getCanvas().style.cursor = '';
+        popup.remove();
+      });
+    }
+
+
+  </script>
+</body>
+
+</html>
