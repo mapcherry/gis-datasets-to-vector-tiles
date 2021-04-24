@@ -127,7 +127,7 @@ docker run -v %CD%\data:/data -v %CD%\tiles:/tiles --rm --name merge-parkanlagen
 
 ## Data presentation
 
-Use maputnki to style your mbtiles maps https://maputnik.github.io/
+Use maputnik to style your mbtiles maps https://maputnik.github.io/
 
 Using docker klokantech/tileserver-gl-light to serve custom tiles to localhost
 
