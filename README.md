@@ -84,6 +84,7 @@ Serving maps on the web means _transforming_ geographical data into tiles, _serv
 1. Park data for Rostock https://data.europa.eu/data/datasets/a9486089-80ce-43ae-87fd-97f81260f34c?locale=en
 2. Overpass-api query OSM on nodes with 'amenity' = 'waste_basket' tags for Rostock area  https://overpass-turbo.eu/s/16lR
 
+Import data to QGIS and clip data waste_baskets for park area only. 
 
 ## Data tiling
 
