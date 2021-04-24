@@ -127,5 +127,6 @@ docker run -v %CD%\data:/data -v %CD%\tiles:/tiles --rm --name merge-parkanlagen
 ## Data presentation
 
 `klokantech/tileserver-gl-light`
+``` docker run -d --name tileserver-customtiles -p 8000:80 -v %CD%:/data klokantech/tileserver-gl-light:v2.4.0 ```
 
 ## Q&A
