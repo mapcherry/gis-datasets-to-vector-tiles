@@ -132,6 +132,7 @@ Use maputnik to style your mbtiles maps https://maputnik.github.io/
 Using docker klokantech/tileserver-gl-light to serve custom tiles to localhost
 
 ```docker run -d --name tileserver-customtiles -p 8000:80 -v %CD%:/tiles klokantech/tileserver-gl-light:v2.4.0 ```
+
 For MacOS
 ```docker run -d --name tileserver-customtiles -p 8000:80 -v $(pwd):\tiles klokantech/tileserver-gl-light:v2.4.0 ```
 
